@@ -1,0 +1,25 @@
+@model List<ServiceTracker.Models.Committees>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Names</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var com in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@com.Id">Details</a>
+                </td>
+                <td>@com.Id</td>
+                <td>@com.Name</td>
+            </tr>            
+        } 
+    </tbody>
+</table>
