@@ -1,0 +1,24 @@
+@model List<ServiceTracker.Models.Committees>
+
+
+<div>test</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>IDs</th>
+            <th>Names</th>
+            <th>Term Length</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var com in Model)
+        {
+            <tr>
+                <td>@com.Id</td>
+                <td>@com.Name</td>
+                <td>@com.Term</td>
+            </tr>            
+        } 
+    </tbody>
+</table>
