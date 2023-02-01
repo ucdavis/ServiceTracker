@@ -1,13 +1,13 @@
 @model List<ServiceTracker.Models.Committees>
 
 
-<div>test</div>
 
-<table>
+<table class="table">
     <thead>
         <tr>
-            <th>IDsss</th>
+            <th>ID</th>
             <th>Names</th>
+            <th>Descr.</th>
             <th>Term Length</th>
         </tr>
     </thead>
@@ -17,6 +17,7 @@
             <tr>
                 <td>@com.Id</td>
                 <td>@com.Name</td>
+                <td>@com.Description</td>
                 <td>@com.Term</td>
             </tr>            
         } 
