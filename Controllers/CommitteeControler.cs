@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ServiceTracker.Helpers;
 using ServiceTracker.Models;
 using System.Text.Encodings.Web;
 
@@ -21,9 +22,13 @@ namespace MvcMovie.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int year)
         {
-            var model = await _context.Committees.Include(c => c.Members).ThenInclude(m => m.Employee).Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(year == 0)
+            {
+                year = YearFinder.Year;
+            }
+            var model = await _context.Committees.Include(c => c.Members.Where(m=> m.Year == year)).ThenInclude(m => m.Employee).Where(c => c.Id == id).FirstOrDefaultAsync();
             return View(model);
         }
 
