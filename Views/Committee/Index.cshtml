@@ -5,20 +5,20 @@
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>ID</th>
             <th>Names</th>
-            <th>Descr.</th>
-            <th>Term Length</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var com in Model)
         {
             <tr>
+                <td>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@com.Id">Details</a>
+                </td>
                 <td>@com.Id</td>
                 <td>@com.Name</td>
-                <td>@com.Description</td>
-                <td>@com.Term</td>
             </tr>            
         } 
     </tbody>

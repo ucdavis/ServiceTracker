@@ -1,0 +1,10 @@
+@model List<int>
+
+<ul>
+@foreach (var item in Model)
+{
+    <li>@item</li>
+}
+</ul>
+
+<select class="col-sm-1 form-control" asp-items="@(new SelectList(Model))"></select>

@@ -1,0 +1,26 @@
+@model ServiceTracker.Models.Committees
+
+<h2>@Model.Name</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Chair</th>
+            <th>ExOfficio</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model.Members)
+        {
+            <tr>
+                <td>@member.Employee.Name</td>
+                <td>@member.Chair</td>
+                <td>@member.ExOfficio</td>
+                <td>@member.Year</td>
+            </tr>    
+        }
+    </tbody>
+</table>

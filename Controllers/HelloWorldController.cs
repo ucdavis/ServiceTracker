@@ -28,6 +28,18 @@ namespace MvcMovie.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> CommitteeMembers(int id)
+        {
+            var model = await _context.Committees.Include(c => c.Members).ThenInclude(m => m.Employee).Where(c => c.Id == id).FirstOrDefaultAsync();
+            return View(model);
+        }
+
+        public ActionResult YearList()
+        {
+            var model = ServiceTracker.Helpers.YearFinder.YearList;
+            return View(model);
+        }
+
         // 
         // GET: /HelloWorld/Welcome/ 
 

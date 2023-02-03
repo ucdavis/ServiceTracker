@@ -1,0 +1,56 @@
+@model ServiceTracker.Models.CommitteeDetailsViewModel
+
+<h2>@Model.committee.Name</h2>
+
+<div>    
+    <div class="form-group row">
+        <label asp-for="committee.Name" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            <input type="text" asp-for="committee.Name" readonly class="form-control-plaintext">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="committee.Description" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            <input type="text" asp-for="committee.Description" readonly class="form-control-plaintext">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="committee.Term" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+        <input type="text" asp-for="committee.Term" readonly class="form-control-plaintext">
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.committee.Id">Edit Details</a>
+    </div>
+</div>
+
+<form>   
+    <div class="form-group row">
+        <label asp-for="ViewYear" class="col-sm-4 col-form-label">Show Committee Members for</label>
+        <select asp-for="ViewYear" style="max-width: 100px;" class="col-sm-3 form-control" asp-items="@Model.years"></select>
+    </div>    
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Chair</th>
+            <th>ExOfficio</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model.committee.Members.OrderByDescending(m=> m.Chair).ThenBy(m=> m.ExOfficio).ThenBy(m=>m.Employee.LastName))
+        {
+            <tr>
+                <td>@member.Employee.Name</td>
+                <td><input type="checkbox" checked="@member.Chair" disabled></td>
+                <td><input type="checkbox" checked="@member.ExOfficio" disabled></td>
+                <td>@member.Year</td>
+            </tr>    
+        }
+    </tbody>
+</table>
