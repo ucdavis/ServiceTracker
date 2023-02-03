@@ -24,11 +24,7 @@ namespace MvcMovie.Controllers
 
         public async Task<IActionResult> Details(int id, int year)
         {
-            if(year == 0)
-            {
-                year = YearFinder.Year;
-            }
-            var model = await _context.Committees.Include(c => c.Members.Where(m=> m.Year == year)).ThenInclude(m => m.Employee).Where(c => c.Id == id).FirstOrDefaultAsync();
+            var model = await CommitteeDetailsViewModel.Create(_context, id, year);
             return View(model);
         }
 
