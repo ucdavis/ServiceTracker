@@ -25,11 +25,13 @@
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.committee.Id">Edit Details</a>
     </div>
 </div>
-
-<form>   
+<hr>
+<form asp-action="Details">   
     <div class="form-group row">
+        <input type="hidden" id="Id" name="Id" value="@Model.committee.Id">
         <label asp-for="ViewYear" class="col-sm-4 col-form-label">Show Committee Members for</label>
         <select asp-for="ViewYear" style="max-width: 100px;" class="col-sm-3 form-control" asp-items="@Model.years"></select>
+        <input type="submit" value="Get Members" style="max-width: 150px;" class="btn btn-info">
     </div>    
 </form>
 
@@ -51,6 +53,10 @@
                 <td><input type="checkbox" checked="@member.ExOfficio" disabled></td>
                 <td>@member.Year</td>
             </tr>    
+        }
+        @if(!Model.committee.Members.Any())
+        {
+            <tr><td colspan="3">No members for selected year.</td></tr>
         }
     </tbody>
 </table>
