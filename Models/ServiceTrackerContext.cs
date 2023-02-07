@@ -19,6 +19,7 @@ namespace ServiceTracker.Models
         public virtual DbSet<ServiceTracker.Models.Employee> Employees { get; set; }
         public virtual DbSet<Committees> Committees { get; set; }
         public virtual DbSet<CommitteeMembers> CommitteeMembers { get; set; }
+        public virtual DbSet<Members> Members { get; set; }
 
         public static ILoggerFactory GetLoggerFactory()
         {

@@ -14,6 +14,6 @@ namespace ServiceTracker.Models
 
 
         [ForeignKey("CommitteeId")]
-        public ICollection<CommitteeMembers> Members { get; set; }
+        public ICollection<CommitteeMembers> Members { get; set; }     
     }
 }

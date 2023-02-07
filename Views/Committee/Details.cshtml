@@ -31,7 +31,8 @@
         <input type="hidden" id="Id" name="Id" value="@Model.committee.Id">
         <label asp-for="ViewYear" class="col-sm-4 col-form-label">Show Committee Members for</label>
         <select asp-for="ViewYear" style="max-width: 100px;" class="col-sm-3 form-control" asp-items="@Model.years"></select>
-        <input type="submit" value="Get Members" style="max-width: 150px;" class="btn btn-info">
+        <input type="submit" value="Get Members" style="max-width: 125px;" class="btn btn-info"> &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a asp-action="AddMember" asp-route-id="@Model.committee.Id" class="btn btn-info"  style="max-width: 125px;" >Add Member</a>
     </div>    
 </form>
 
@@ -45,10 +46,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var member in Model.committee.Members.OrderByDescending(m=> m.Chair).ThenBy(m=> m.ExOfficio).ThenBy(m=>m.Employee.LastName))
+        @foreach (var member in Model.committee.Members.OrderByDescending(m=> m.Chair).ThenBy(m=> m.ExOfficio).ThenBy(m=>m.SortName))
         {
             <tr>
-                <td>@member.Employee.Name</td>
+                <td>@member.Name</td>
                 <td><input type="checkbox" checked="@member.Chair" disabled></td>
                 <td><input type="checkbox" checked="@member.ExOfficio" disabled></td>
                 <td>@member.Year</td>
