@@ -62,6 +62,42 @@ namespace MvcMovie.Controllers
             return View(commitee);
         }
 
+        public async Task<IActionResult> AddMember(int id)
+        {
+            var model = await CommitteMemberAddViewModel.Create(_context, id, 0);
+            if(model.committee == null)
+            {
+                ErrorMessage = "Committee not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> GetMembers(string idType)
+        {
+            if(idType == "Faculty")
+            {
+                var faculty = await _context.Employees.Where(e => e.VoteCategory != 0).OrderBy(e => e.LastName).ThenBy(e => e.LastName).Select(e => new GenericMember{ Id = e.Id, FirstName = e.FirstName, LastName = e.LastName}).ToListAsync();
+                return Json(faculty); 
+            }
+            if(idType == "Manual Members")
+            {
+                var members = await _context.Members.OrderBy(m => m.LastName).ThenBy(m => m.FirstName).Select(m => new GenericMember{ Id = m.Id.ToString(), FirstName = m.FirstName, LastName = m.LastName}).ToListAsync();
+                return Json(members);
+            }
+            if(idType == "Admin Staff")
+            {
+                var staff = await _context.Employees.Where(e => e.AdminStaff && e.Current).OrderBy(e => e.LastName).ThenBy(e => e.LastName).Select(e => new GenericMember{ Id = e.Id, FirstName = e.FirstName, LastName = e.LastName}).ToListAsync();
+                return Json(staff);
+            }
+            if(idType == "All Non-faculty")
+            {
+                var everyone = await _context.Employees.Where(e => e.Current && e.VoteCategory == 0).OrderBy(e => e.LastName).ThenBy(e => e.LastName).Select(e => new GenericMember{ Id = e.Id, FirstName = e.FirstName, LastName = e.LastName}).ToListAsync();
+                return Json(everyone);
+            }
+            return BadRequest();
+        }
+
        
 
         

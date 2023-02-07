@@ -15,5 +15,11 @@ namespace ServiceTracker.Models
                 return FirstName + " " + LastName;
             }
         }
+
+        public string LastFirstName { 
+            get {
+                return LastName + ", " + FirstName;
+            }
+        }
     }
 }

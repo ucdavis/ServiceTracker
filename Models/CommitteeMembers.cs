@@ -8,7 +8,7 @@ namespace ServiceTracker.Models
         public int Id { get; set; }
         public int CommitteeId { get; set; }
        
-        public string? EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
         public int? MemberId { get; set; }
         public bool Chair { get; set; }
         public bool ExOfficio { get; set; }

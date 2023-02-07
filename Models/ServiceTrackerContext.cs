@@ -48,6 +48,8 @@ namespace ServiceTracker.Models
 
                 entity.Property(e => e.FirstName).HasColumnName("first_name");
                 entity.Property(e => e.LastName).HasColumnName("last_name");
+                entity.Property(e => e.VoteCategory).HasColumnName("vote_category");
+                entity.Property(e => e.AdminStaff).HasColumnName("admin_staff");
 
             });
         }
