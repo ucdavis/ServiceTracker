@@ -8,6 +8,11 @@ html {
   }
 }
 
+.big-check {
+  width: 30px; 
+  height: 30px;
+}
+
 html {
   position: relative;
   min-height: 100%;

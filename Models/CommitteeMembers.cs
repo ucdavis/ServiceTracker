@@ -7,15 +7,50 @@ namespace ServiceTracker.Models
     {
         public int Id { get; set; }
         public int CommitteeId { get; set; }
-        [Required]
+       
         public string EmployeeId { get; set; }
+        public int? MemberId { get; set; }
         public bool Chair { get; set; }
         public bool ExOfficio { get; set; }
         public int Year { get; set; }
+        public int EndYear { get; set; }
+        public int StartYear { get; set; }
+
+        public string Name { 
+            get {
+                if(Employee != null)
+                {
+                    return Employee.FirstName + " " + Employee.LastName;
+                }
+                if(Member != null)
+                {
+                    return Member.FirstName + " " + Member.LastName;
+                }
+                return "Unknown name";
+            }
+        }
+
+        public string SortName { 
+            get {
+                if(Employee != null)
+                {
+                    return Employee.LastName + " " + Employee.FirstName;
+                }
+                if(Member != null)
+                {
+                    return Member.LastName + " " + Member.FirstName;
+                }
+                return "ZZZZ Unknown name";
+            }
+        }
+
+
 
         
         [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
+        [ForeignKey("MemberId")]
+        public Members Member { get; set; }
         
     }
 }

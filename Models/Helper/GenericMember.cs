@@ -2,14 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceTracker.Models
 {
-    public class Employee
+    public class GenericMember
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Int16 VoteCategory { get; set; }
-        public bool AdminStaff { get; set; }
-        public bool Current { get; set; }
+       
 
         public string Name { 
             get {
