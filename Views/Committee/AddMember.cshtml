@@ -1,23 +1,20 @@
-@model ServiceTracker.Models.CommitteMemberAddViewModel
+@model ServiceTracker.Models.CommitteeMemberAddViewModel
 
-<h2>Add members to @Model.committee.Name</h2>
+<h2>Add member to @Model.committee.Name</h2>
 
 <form asp-action="AddMember">
+    <input type="hidden" asp-for="member.CommitteeId">
     <div class="container"> 
         <div class="form-group row">
             <label class="col-sm-3 col-form-label" for="showType">Showing:</label>
             <div class="col-sm-2">
-                <select id="showType" class="form-select">
+                <select id="showType" class="form-select" onchange="refresh()">
                     <option>Faculty</option>
                     <option>Admin Staff</option>
                     <option>All Non-faculty</option>
                     <option>Manual Members</option>
                 </select>
-            </div>
-            <div class="col-sm-2">
-                <input type="button" id="GetList" value="Get List">
-            </div>
-            
+            </div>            
         </div>        
         <div class="form-group row">
             <label asp-for="member.EmployeeId" class="col-sm-3 col-form-label">Member to Add:</label>    
@@ -26,13 +23,25 @@
             </div>  
         </div>
         <div class="form-group row">
-            <label asp-for="ViewYear" class="col-sm-4 col-form-label">Star Year of Appointment</label>
+            <label asp-for="member.StartYear" class="col-sm-3 col-form-label">Star Year of Appointment</label>
             <div class="col-sm-2">
-                <select asp-for="ViewYear" class="form-select" asp-items="@Model.years"></select>
+                <select asp-for="member.StartYear" class="form-select" asp-items="@Model.years"></select>
             </div>      
         </div>
         <div class="form-group row">
-            <label asp-for="AppointmentLength" class="col-sm-4 col-form-label">Appointment Length</label>
+            <label asp-for="member.Chair" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-1">
+                <input type="checkbox" asp-for="member.Chair" class="big-check">
+            </div>
+        </div> 
+        <div class="form-group row">
+            <label asp-for="member.ExOfficio" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-1">
+                <input type="checkbox" asp-for="member.ExOfficio" class="big-check">
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label asp-for="AppointmentLength" class="col-sm-3 col-form-label">Appointment Length</label>
             <div class="col-sm-2">
                 <select asp-for="AppointmentLength" class="form-select">
                     <option value="1">1</option>
@@ -48,6 +57,11 @@
                 </select>  
             </div>                      
         </div>
+        <div class="form-group row">
+            <div class="col-sm-1">
+                <input type="submit" value="Add Appointment" class="btn btn-primary">
+            </div>            
+        </div>
     </div>
 </form>
 
@@ -55,33 +69,34 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     
-    <script type="text/javascript">        
-        $(document).ready(function () {
-            $('#GetList').click(function () {
-                var idType = $('#showType').val();
-                alert(idType);
-                $.ajax({
-                    method: 'Get',
-                    url: '/Committee/GetMembers',
-                     data: {
-                        idType: idType
-                    }
-                })
-                .done(function(data) {
-                    alert(data.length);
-                    $('#member_EmployeeId').empty();                    
-                    $.each(data,function(i,data)
-                    {
-                        var div_data="<option value="+data.id+">"+data.lastFirstName+"</option>";
-                        $(div_data).appendTo('#member_EmployeeId');
-                    });
-                })
-                .fail(function(xhr) {
-                    alert("Could not get list of available classes");
-                    console.log('error', xhr);
-                });                                
-            });
-        });
+    <script type="text/javascript">  
+        function refresh(){                
+            processClick();
+        }    
+        function processClick() {
+            var idType = $('#showType').val();
+            //alert(idType);
+            $.ajax({
+                method: 'Get',
+                url: '/Committee/GetMembers',
+                    data: {
+                    idType: idType
+                }
+            })
+            .done(function(data) {
+                //alert(data.length);
+                $('#member_EmployeeId').empty();                    
+                $.each(data,function(i,data)
+                {
+                    var div_data="<option value="+data.id+">"+data.lastFirstName+"</option>";
+                    $(div_data).appendTo('#member_EmployeeId');
+                });
+            })
+            .fail(function(xhr) {
+                alert("Could not get list of available classes");
+                console.log('error', xhr);
+            }); 
+        }        
             
     </script>
 }

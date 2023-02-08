@@ -29,8 +29,8 @@ namespace ServiceTracker.Models
             var model = new CommitteeDetailsViewModel
             {
                 committee = await _context.Committees
-                    .Include(c => c.Members.Where(m=> m.Year == year)).ThenInclude(m => m.Employee)
-                    .Include(c => c.Members.Where(m=> m.Year == year)).ThenInclude(m => m.Member)
+                    .Include(c => c.Members.Where(m=> m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Employee)
+                    .Include(c => c.Members.Where(m=> m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Member)
                     .Where(c => c.Id == id).FirstOrDefaultAsync(),
                 ViewYear = year,              
                 years = YearFinder.YearList.ConvertAll(a =>

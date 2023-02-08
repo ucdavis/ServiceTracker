@@ -13,6 +13,8 @@ namespace ServiceTracker.Models
         public bool Chair { get; set; }
         public bool ExOfficio { get; set; }
         public int Year { get; set; }
+        public int EndYear { get; set; }
+        public int StartYear { get; set; }
 
         public string Name { 
             get {
