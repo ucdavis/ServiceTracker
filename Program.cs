@@ -63,9 +63,11 @@ internal class Program
                     }
                     context.Principal.AddIdentity(ident);
 
-                    return;
+                    await Task.FromResult(0);
                 };
             }); 
+        
+        //builder.Services.AddAuthorization();
 
         // builder.Services.AddAuthorization(options =>
         // {
@@ -89,6 +91,7 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseAuthentication();
+        app.UseCookiePolicy();
 
         app.UseRouting();
 

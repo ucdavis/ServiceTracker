@@ -20,12 +20,14 @@ namespace MvcMovie.Controllers
             return View();
         }
 
-         [AllowAnonymous]
+        
         public async Task Login(string returnUrl)
         {            
             var props = new AuthenticationProperties { RedirectUri = returnUrl };
             await HttpContext.ChallengeAsync(CasDefaults.AuthenticationType, props);
         }
+
+
 
     }
 }
