@@ -52,25 +52,19 @@ internal class Program
                     var db = context.HttpContext.RequestServices.GetRequiredService<ServiceTrackerContext>();
                     var user = await db.Employees.Where(e => e.Current && e.KerberosId == kerb).FirstOrDefaultAsync();
                     if(user != null)
-                    {
+                    {                       
                         ident.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
                         ident.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
-
                         if(user.AdminStaff || user.Chair)
                         {
                             ident.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
                             ident.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
                         }
                     }
-                    context.Principal.AddIdentity(ident);
-
                     await Task.FromResult(0);
                 };
             }); 
-        // builder.Services.AddAuthorization(options =>
-        // {
-        //     options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
-        // });
+       
 
         var app = builder.Build();
 
