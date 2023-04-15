@@ -5,7 +5,7 @@ using ServiceTracker.Models;
 using System.Text.Encodings.Web;
 using ServiceTracker.Controllers;
 
-namespace MvcMovie.Controllers
+namespace ServiceTracker.Controllers
 {
     public class CommitteeController : SuperController
     {

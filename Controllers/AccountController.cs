@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using GSS.Authentication.CAS;
 
-namespace MvcMovie.Controllers
+namespace ServiceTracker.Controllers
 {
    
     [AllowAnonymous]
