@@ -6,6 +6,7 @@ using System.Security.Claims;
 using GSS.Authentication.CAS.AspNetCore;
 using ServiceTracker.Services;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using Microsoft.AspNetCore.Identity;
 
 internal class Program
 {
@@ -18,12 +19,12 @@ internal class Program
             .AddRazorRuntimeCompilation();        
 
         builder.Services.AddDbContext<ServiceTrackerContext>(o =>
-                    {
-                        o.UseSqlServer(builder.Configuration.GetConnectionString("ServiceTrackerContext"));
-                        o.UseLoggerFactory(ServiceTrackerContext.GetLoggerFactory());
-                    });
-                  
+            {
+                o.UseSqlServer(builder.Configuration.GetConnectionString("ServiceTrackerContext"));
+                o.UseLoggerFactory(ServiceTrackerContext.GetLoggerFactory());
+            });                 
         
+
         builder.Services.AddScoped<IdentityService, IdentityService>();
         builder.Services.AddAuthentication("Cookies")
             .AddCookie(options =>
@@ -55,7 +56,7 @@ internal class Program
                         ident.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
                         ident.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
 
-                        if(user.AdminStaff && user.Chair)
+                        if(user.AdminStaff || user.Chair)
                         {
                             ident.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
                             ident.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
@@ -66,17 +67,10 @@ internal class Program
                     await Task.FromResult(0);
                 };
             }); 
-        
-        //builder.Services.AddAuthorization();
-
         // builder.Services.AddAuthorization(options =>
         // {
-        //     // Globally Require Authenticated Users
-        //     options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        //         .RequireAuthenticatedUser()
-        //         .Build();
+        //     options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
         // });
-        
 
         var app = builder.Build();
 
