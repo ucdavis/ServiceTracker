@@ -55,10 +55,15 @@ internal class Program
                     {                       
                         ident.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
                         ident.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
+                        ident.AddClaim(new Claim(ClaimTypes.Sid,user.Id));
+                        ident.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
                         if(user.AdminStaff || user.Chair)
                         {
-                            ident.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                            ident.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
+                            ident.AddClaim(new Claim(ClaimTypes.Role, "Admin"));                            
+                        }
+                        if(user.VoteCategory != 0)
+                        {
+                            ident.AddClaim(new Claim(ClaimTypes.Role, "Faculty"));
                         }
                     }
                     await Task.FromResult(0);

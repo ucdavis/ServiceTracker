@@ -4,9 +4,11 @@ using ServiceTracker.Helpers;
 using ServiceTracker.Models;
 using System.Text.Encodings.Web;
 using ServiceTracker.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ServiceTracker.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CommitteeController : SuperController
     {
         private readonly ServiceTrackerContext _context;
