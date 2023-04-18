@@ -51,7 +51,7 @@ namespace ServiceTracker.Controllers
             var year = YearFinder.Year;
             var interestToMove = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();
             var interestBumped = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year && p.PreferenceOrder == (interestToMove.PreferenceOrder + 1)).FirstOrDefaultAsync();
-            var maxInterest = await _context.CommitteePreferences.MaxAsync(p => p.PreferenceOrder);
+            var maxInterest = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year).MaxAsync(p => p.PreferenceOrder);
             if(interestToMove.PreferenceOrder == maxInterest || interestToMove == null || interestBumped == null || interestToMove.EmployeeId != employeeId || interestToMove.Year != year)
             {
                 ErrorMessage = "Committee not found or already at last position";
@@ -83,6 +83,35 @@ namespace ServiceTracker.Controllers
             }            
             await _context.SaveChangesAsync();
             Message = "Interest deleted";
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> New()
+        {
+            var model = await _context.Committees.ToListAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> New(int id)
+        {
+            var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
+            var year = YearFinder.Year;
+            var maxExistingInterest = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year).MaxAsync(p => (int?)p.PreferenceOrder);
+            var newInterest = new CommitteePreference();
+            newInterest.CommitteeId = id;
+            newInterest.EmployeeId = employeeId;
+            newInterest.Year = year;
+            if(maxExistingInterest == null)
+            {
+                newInterest.PreferenceOrder = 1;
+            } else 
+            {
+                newInterest.PreferenceOrder = maxExistingInterest.Value + 1;
+            }
+            _context.Add(newInterest);
+            await _context.SaveChangesAsync();
+            Message = "Interest added";
             return RedirectToAction(nameof(Index));
 
         }
