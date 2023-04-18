@@ -20,6 +20,8 @@ namespace ServiceTracker.Models
         public virtual DbSet<Committees> Committees { get; set; }
         public virtual DbSet<CommitteeMembers> CommitteeMembers { get; set; }
         public virtual DbSet<Members> Members { get; set; }
+        public virtual DbSet<CommitteePreference>  CommitteePreferences { get; set; }
+        public virtual DbSet<EmployeeCommitments>  Commitments { get; set; }
 
         public static ILoggerFactory GetLoggerFactory()
         {
@@ -54,6 +56,8 @@ namespace ServiceTracker.Models
                 entity.Property(e => e.Chair).HasColumnName("dept_chair");
 
             });
+
+            
         }
     }
 }

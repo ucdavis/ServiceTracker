@@ -1,0 +1,77 @@
+@model ServiceTracker.Models.InterestIndexViewModel
+
+<h1>Interests & Committement for @Model.InterestYear</h1>
+
+<hr>
+<div>
+    <h2>Interest in Departmental Committe(s)</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Committe</th>
+                <th>Preferance Order</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var interest in Model.interests)
+            {
+                <tr>
+                    <td>@interest.Committee.Name</td>
+                    <td>@interest.PreferenceOrder</td>
+                    <td>
+                        @if(@interest.PreferenceOrder == 1)
+                        {
+                            <i class="fa-solid fa-circle-arrow-up"></i>
+                        } else 
+                        {
+                            <a asp-action="MoveUp" asp-route-id="@interest.Id"><i class="fa-solid fa-circle-arrow-up"></i></a>
+                        } 
+                        |
+                        @if(@interest.PreferenceOrder == Model.interests.Last().PreferenceOrder)
+                        {
+                            <i class="fa-solid fa-circle-arrow-down"></i>
+                        } else 
+                        {
+                            <a asp-action="MoveDown" asp-route-id="@interest.Id"><i class="fa-solid fa-circle-arrow-down"></i></a>
+                        }                       
+                        | <a asp-action="Delete" asp-route-id="@interest.Id"><i class="fa-solid fa-trash-can"></i></a>
+                        
+                        
+                        
+                    </td>
+                </tr>                
+            }
+        </tbody>
+
+    </table>
+</div>
+<hr>
+<div>
+    <h2>Current Appointment/Committements</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Start Year</th>
+                <th>End Year</th>
+                <th>Location/Level</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var commitment in Model.commitments)
+            {
+                <tr>
+                    <td>@commitment.Title</td>
+                    <td>@commitment.startYear</td>
+                    <td>@commitment.endYear</td>
+                    <td>@commitment.Title</td>
+                    <td>@commitment.description</td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
