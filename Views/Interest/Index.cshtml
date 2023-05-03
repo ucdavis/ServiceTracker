@@ -35,10 +35,7 @@
                         {
                             <a asp-action="MoveDown" asp-route-id="@interest.Id"><i class="fa-solid fa-circle-arrow-down"></i></a>
                         }                       
-                        | <a asp-action="Delete" asp-route-id="@interest.Id"><i class="fa-solid fa-trash-can"></i></a>
-                        
-                        
-                        
+                        | <a asp-action="Delete" asp-route-id="@interest.Id" onclick="return confirm('Are you sure you want to delete this interest?')"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>                
             }
@@ -48,7 +45,7 @@
 </div>
 <hr>
 <div>
-    <h2>Current Appointment/Committements</h2>
+    <h2>Current Appointment & Committements</h2>
     <table class="table">
         <thead>
             <tr>
@@ -57,6 +54,7 @@
                 <th>End Year</th>
                 <th>Location/Level</th>
                 <th>Position</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -66,8 +64,36 @@
                     <td>@commitment.Title</td>
                     <td>@commitment.startYear</td>
                     <td>@commitment.endYear</td>
+                    <td>@commitment.Location</td>
+                    <td>@commitment.Description</td>    
+                    <td><a asp-action="Edit" asp-controller="Commitment" asp-route-id="@commitment.Id"><i class="fa-solid fa-pen"></i></a> | <a asp-action="Delete" asp-controller="Commitment" asp-route-id="@commitment.Id" onclick="return confirm('Are you sure you want to delete this commitment?')"><i class="fa-solid fa-trash-can"></i></a></td>                
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="New" asp-controller="Commitment" class="btn btn-primary">Add Appointment or Committment</a>
+    <h2>Past Appointment & Committements (in case they've been extended)</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Start Year</th>
+                <th>End Year</th>
+                <th>Location/Level</th>
+                <th>Position</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var commitment in Model.pastCommitments)
+            {
+                <tr>
                     <td>@commitment.Title</td>
-                    <td>@commitment.description</td>                    
+                    <td>@commitment.startYear</td>
+                    <td>@commitment.endYear</td>
+                    <td>@commitment.Location</td>
+                    <td>@commitment.Description</td>    
+                    <td><a asp-action="Edit" asp-controller="Commitment" asp-route-id="@commitment.Id"><i class="fa-solid fa-pen"></i></a> | <a asp-action="Delete" asp-controller="Commitment" asp-route-id="@commitment.Id" onclick="return confirm('Are you sure you want to delete this commitment?')"><i class="fa-solid fa-trash-can"></i></a></td>                
                 </tr>
             }
         </tbody>

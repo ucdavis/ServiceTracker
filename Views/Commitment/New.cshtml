@@ -1,0 +1,47 @@
+@model ServiceTracker.Models.CommitmentViewModel
+
+
+<form asp-action="new">
+    <div class="mb-3 row">
+        <label asp-for="commitment.Title" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            <input type="text" asp-for="commitment.Title" class="form-control">
+        </div>
+        <span asp-validation-for="commitment.Title" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="commitment.startYear" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-2">
+            <input type="text" asp-for="commitment.startYear" class="form-control">
+        </div>
+        <span asp-validation-for="commitment.startYear" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="commitment.endYear" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-2">
+            <input type="text" asp-for="commitment.endYear" class="form-control">
+        </div>
+        <span asp-validation-for="commitment.endYear" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="commitment.Location" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3">            
+            <select asp-for="commitment.Location" class="form-select" asp-items="@(new SelectList(Model.locations))"></select>
+        </div>
+        <span asp-validation-for="commitment.Location" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="commitment.Description" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-4">            
+            <select asp-for="commitment.Description" class="form-select" asp-items="@(new SelectList(Model.descriptions))"></select>
+        </div>
+        <span asp-validation-for="commitment.Description" class="text-danger"></span>
+    </div>
+   
+    <input class="btn btn-primary" type="submit" value="Enter Commitment">
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
