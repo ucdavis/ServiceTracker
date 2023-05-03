@@ -29,7 +29,7 @@ namespace ServiceTracker.Controllers
         public async Task<IActionResult> MoveUp(int id)
         {
             var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
-            var year = YearFinder.Year;
+            var year = YearFinder.Year + 1;
             var interestToMove = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();
             var interestBumped = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year && p.PreferenceOrder == (interestToMove.PreferenceOrder -1)).FirstOrDefaultAsync();
             if(interestToMove.PreferenceOrder == 1 || interestToMove == null || interestBumped == null || interestToMove.EmployeeId != employeeId || interestToMove.Year != year)
@@ -48,7 +48,7 @@ namespace ServiceTracker.Controllers
         public async Task<IActionResult> MoveDown(int id)
         {
             var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
-            var year = YearFinder.Year;
+            var year = YearFinder.Year + 1;
             var interestToMove = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();
             var interestBumped = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year && p.PreferenceOrder == (interestToMove.PreferenceOrder + 1)).FirstOrDefaultAsync();
             var maxInterest = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year).MaxAsync(p => p.PreferenceOrder);
@@ -68,19 +68,14 @@ namespace ServiceTracker.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
-            var year = YearFinder.Year;
-            var interestToDelete = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();
-            var interestsToReorder = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year && p.PreferenceOrder >= (interestToDelete.PreferenceOrder + 1)).ToListAsync();
+            var year = YearFinder.Year + 1;
+            var interestToDelete = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();            
             if(interestToDelete == null || interestToDelete.EmployeeId != employeeId || interestToDelete.Year != year)
             {
                 ErrorMessage = "Committee not found";
                 return RedirectToAction(nameof(Index));
             }
-            _context.Remove(interestToDelete);
-            if(interestsToReorder != null)
-            {
-                interestsToReorder.ForEach(p => p.PreferenceOrder = p.PreferenceOrder -1);
-            }            
+            _context.Remove(interestToDelete);             
             await _context.SaveChangesAsync();
             Message = "Interest deleted";
             return RedirectToAction(nameof(Index));
@@ -96,7 +91,7 @@ namespace ServiceTracker.Controllers
         public async Task<IActionResult> New(int id)
         {
             var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
-            var year = YearFinder.Year;
+            var year = YearFinder.Year + 1;
             var maxExistingInterest = await _context.CommitteePreferences.Where(p => p.EmployeeId == employeeId && p.Year == year).MaxAsync(p => (int?)p.PreferenceOrder);
             var newInterest = new CommitteePreference();
             newInterest.CommitteeId = id;
