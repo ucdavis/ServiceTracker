@@ -14,6 +14,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.13" />
+    <PackageReference Include="GSS.Authentication.CAS.Core" Version="5.3.3" />
+    <PackageReference Include="GSS.Authentication.CAS.AspNetCore" Version="5.3.3" />
   </ItemGroup>
 
 </Project>

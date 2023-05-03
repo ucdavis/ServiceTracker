@@ -1,0 +1,23 @@
+@model List<ServiceTracker.Models.Committees>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Commitee</td>
+                <td>Description</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var committee in Model)
+            {
+                <tr>
+                    <td>@committee.Name</td>
+                    <td>@committee.Description</td>
+                    <td><form asp-action="new"><input type="hidden" id="id" name="id" value="@committee.Id"><input type="submit" value="Add" class="btn btn-primary"></form></td>
+                </tr>                
+            }
+        </tbody>
+    </table>
+</div>

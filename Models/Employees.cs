@@ -10,6 +10,8 @@ namespace ServiceTracker.Models
         public Int16 VoteCategory { get; set; }
         public bool AdminStaff { get; set; }
         public bool Current { get; set; }
+        public string KerberosId { get; set; }
+        public bool Chair { get; set; }
 
         public string Name { 
             get {

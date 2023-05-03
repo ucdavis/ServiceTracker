@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ServiceTracker.Models;
 using System.Text.Encodings.Web;
 
-namespace MvcMovie.Controllers
+namespace ServiceTracker.Controllers
 {
     public class HelloWorldController : Controller
     {

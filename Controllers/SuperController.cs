@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ServiceTracker.Controllers
 {
-    [AutoValidateAntiforgeryToken]  
+    [AutoValidateAntiforgeryToken] 
+    [Authorize] 
     public class SuperController : Controller
     {
         private const string TempDataMessageKey = "Message";

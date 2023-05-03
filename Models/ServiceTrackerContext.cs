@@ -20,6 +20,8 @@ namespace ServiceTracker.Models
         public virtual DbSet<Committees> Committees { get; set; }
         public virtual DbSet<CommitteeMembers> CommitteeMembers { get; set; }
         public virtual DbSet<Members> Members { get; set; }
+        public virtual DbSet<CommitteePreference>  CommitteePreferences { get; set; }
+        public virtual DbSet<EmployeeCommitments>  Commitments { get; set; }
 
         public static ILoggerFactory GetLoggerFactory()
         {
@@ -50,8 +52,12 @@ namespace ServiceTracker.Models
                 entity.Property(e => e.LastName).HasColumnName("last_name");
                 entity.Property(e => e.VoteCategory).HasColumnName("vote_category");
                 entity.Property(e => e.AdminStaff).HasColumnName("admin_staff");
+                entity.Property(e => e.KerberosId).HasColumnName("kerberos_id");
+                entity.Property(e => e.Chair).HasColumnName("dept_chair");
 
             });
+
+            
         }
     }
 }
