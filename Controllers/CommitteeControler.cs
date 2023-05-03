@@ -84,7 +84,7 @@ namespace ServiceTracker.Controllers
             if(employeeCheck){
                 newMember.EmployeeId = submittedMember.EmployeeId;
             } else {
-                newMember.MemberId = submittedMember.MemberId;
+                newMember.MemberId = int.Parse(submittedMember.EmployeeId);
             }
             newMember.CommitteeId = submittedMember.CommitteeId;            
             newMember.StartYear = submittedMember.StartYear;
@@ -127,6 +127,13 @@ namespace ServiceTracker.Controllers
                 return Json(everyone);
             }
             return BadRequest();
+        }
+
+        public async Task<IActionResult> Assignment()
+        {
+            var model = await AssignmentViewModel.Create(_context);
+            return View(model);
+
         }
 
        
