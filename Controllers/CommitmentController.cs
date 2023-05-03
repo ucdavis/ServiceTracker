@@ -19,20 +19,20 @@ namespace ServiceTracker.Controllers
             _context = context;
         }        
 
+        
         public async Task<IActionResult> Delete(int id)
         {
-            var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
-            var year = YearFinder.Year + 1;
-            var interestToDelete = await _context.CommitteePreferences.Where(p => p.Id == id).FirstOrDefaultAsync();            
-            if(interestToDelete == null || interestToDelete.EmployeeId != employeeId || interestToDelete.Year != year)
+            var employeeId = User.FindFirst(ClaimTypes.Sid).Value;           
+            var commitmentToDelete = await _context.Commitments.Where(c => c.Id == id && c.EmployeeId == employeeId).FirstOrDefaultAsync();            
+            if(commitmentToDelete == null)
             {
-                ErrorMessage = "Committee not found";
+                ErrorMessage = "Commitment not found";
                 return RedirectToAction(nameof(Index));
             }
-            _context.Remove(interestToDelete);             
+            _context.Remove(commitmentToDelete);             
             await _context.SaveChangesAsync();
-            Message = "Interest deleted";
-            return RedirectToAction(nameof(Index));
+            Message = "Commitment deleted";
+             return RedirectToAction(nameof(InterestController.Index), nameof(InterestController).Replace("Controller",""));
         }
 
         public ActionResult New()

@@ -65,6 +65,7 @@ namespace ServiceTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        
         public async Task<IActionResult> Delete(int id)
         {
             var employeeId = User.FindFirst(ClaimTypes.Sid).Value;
