@@ -1,6 +1,22 @@
 @model ServiceTracker.Models.AssignmentViewModel
 
+
 <h1>Committee Assignments for @Model.ViewYear</h1>
+@* <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
+  Tooltip on top
+</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Tooltip on right">
+  Tooltip on right
+</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltip on bottom">
+  Tooltip on bottom
+</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tooltip on left">
+  Tooltip on left
+</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+  Tooltip with HTML
+</button> *@
 <div class="container row">
     @foreach (var com in Model.committees)
     {
@@ -9,9 +25,17 @@
                 <h5 class="card-title bg-success text-white">@com.Name</h5>
                 <h6>Current Members (@com.Members.Count)</h6>
                 <ul>
-                @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.SortName))
+                @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.ExOfficio).ThenBy(m => m.SortName))
                 {
-                    <li>@mem.Name @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} <i class="fa-solid fa-circle-info" onmouseover=""></i></li>                    
+                    if(mem.EndYear == Model.ViewYear)
+                    {
+                        <li><span class="text-danger">@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} </span>
+                        <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i></li>
+                    } else
+                    {
+                        <li>@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} 
+                        <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i></li>
+                    }                                        
                 }
                 </ul>
                 <hr>
@@ -19,7 +43,8 @@
                 <ul>
                     @foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
                     {
-                        <li>@inter.Employee.Name Rank: @inter.PreferenceOrder</li>                        
+                        <li>@inter.Employee.Name Rank: @inter.PreferenceOrder 
+                            <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)" ></i></li>                        
                     }
                 </ul>
             </div>
@@ -27,9 +52,75 @@
     }    
 </div>
 
+@section Scripts {
 <script>
-    function getInfo(id)
-    {
-        
+   $(function () {
+        $("[data-bs-toggle='tooltip']").tooltip();
+    });
+   
+    function getInfo(ele,id)
+    {    
+        $(ele).attr('data-bs-original-title', "update at top of funciton");
+        $(ele)
+        $.ajax({
+                method: 'Get',
+                url: '/Committee/GetInfoEmployee',
+                    data: {
+                    id: id
+                }
+            })
+            .done(function(data) {                
+                if(data != null)
+                {                    
+                    if(data.assignments != null)
+                    {
+                        var assignments = data.assignments;
+                    }
+                    if(data.interest != null)
+                    {
+                        var interests = data.interest;
+                    }
+                    if(data.commitments != null)
+                    {
+                        var committments = data.commitments;
+                    }
+                
+                    var results = "";                    
+
+                    if(assignments.length > 0)
+                    {
+                        results = results + "<b>Assignments:</b><hr>";
+                        $.each(assignments,function(i,assignment)
+                        {  
+                            results = results +  assignment.name + "<br>";
+                        });
+                        results = results + "<hr>";
+                    }  
+                    if(interests.length > 0)
+                    {
+                        results = results + "<b>Interests:</b><hr>";
+                        $.each(interests,function(i,interest)
+                        {  
+                            results = results +  interest.committee.name + "<br>";
+                        });
+                        results = results + "<hr>";
+                    }  
+                    if(committments.length > 0)
+                    {
+                        results = results + "<b>Committments:</b><hr>";
+                        $.each(committments,function(i,committment)
+                        {  
+                            results = results +  committment.title + ", " + committment.location + ", " + committment.description + "<br>";
+                        });
+                        results = results + "<hr>";
+                    }       
+                    $(ele).attr('data-bs-original-title', results);
+                }
+            })
+            .fail(function(xhr) {
+                alert("Could not get list of available members");
+                console.log('error', xhr);
+            }); 
     }
 </script>
+}

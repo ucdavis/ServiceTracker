@@ -49,7 +49,7 @@
         @foreach (var member in Model.committee.Members.OrderByDescending(m=> m.Chair).ThenBy(m=> m.ExOfficio).ThenBy(m=>m.SortName))
         {
             <tr>
-                <td>@member.Name</td>
+                <td>@member.ListName</td>
                 <td><input type="checkbox" checked="@member.Chair" disabled></td>
                 <td><input type="checkbox" checked="@member.ExOfficio" disabled></td>
                 <td>

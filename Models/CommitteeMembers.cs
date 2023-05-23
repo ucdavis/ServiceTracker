@@ -8,6 +8,7 @@ namespace ServiceTracker.Models
         public int Id { get; set; }
         public int CommitteeId { get; set; }
        
+        [StringLength(10)]
         public string EmployeeId { get; set; }
         public int? MemberId { get; set; }
         public bool Chair { get; set; }
@@ -16,7 +17,7 @@ namespace ServiceTracker.Models
         public int EndYear { get; set; }
         public int StartYear { get; set; }
 
-        public string Name { 
+        public string ListName { 
             get {
                 if(Employee != null)
                 {
@@ -44,6 +45,20 @@ namespace ServiceTracker.Models
             }
         }
 
+        public string PersonId { 
+            get {
+                if(Employee != null)
+                {
+                    return Employee.Id;
+                }
+                if(Member != null)
+                {
+                    return Member.Id.ToString();
+                }
+                return "ZZZZ Unknown name";
+            }
+        }
+
 
 
         
@@ -51,6 +66,7 @@ namespace ServiceTracker.Models
         public Employee Employee { get; set; }
         [ForeignKey("MemberId")]
         public Members Member { get; set; }
+        
         
     }
 }

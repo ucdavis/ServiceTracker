@@ -133,6 +133,12 @@ namespace ServiceTracker.Controllers
         {
             var model = await AssignmentViewModel.Create(_context);
             return View(model);
+        }
+
+        public async Task<IActionResult> GetInfoEmployee(string id)
+        {
+            var model = await MemberInfoViewModel.Create(_context, id);
+            return Json(model);
 
         }
 

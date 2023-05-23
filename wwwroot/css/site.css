@@ -25,3 +25,8 @@ body {
 label.col-form-label{
   font-weight: bold;
 }
+
+.tooltip-inner {
+  max-width: 500px !important;  
+  width: 500px;
+}
