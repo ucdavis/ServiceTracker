@@ -7,7 +7,7 @@
     <div class="container"> 
         <div class="form-group row">
             <label class="col-sm-3 col-form-label" for="showType">Showing:</label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <select id="showType" class="form-select" onchange="refresh()">
                     <option>Faculty</option>
                     <option>Admin Staff</option>
@@ -93,7 +93,7 @@
                 });
             })
             .fail(function(xhr) {
-                alert("Could not get list of available classes");
+                alert("Could not get list of available members");
                 console.log('error', xhr);
             }); 
         }        
