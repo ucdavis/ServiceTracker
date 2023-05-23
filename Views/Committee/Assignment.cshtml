@@ -1,0 +1,35 @@
+@model ServiceTracker.Models.AssignmentViewModel
+
+<h1>Committee Assignments for @Model.ViewYear</h1>
+<div class="container row">
+    @foreach (var com in Model.committees)
+    {
+        <div class="card col-sm-6">
+            <div class="card-cody bg-success" style="--bs-bg-opacity: .25;">
+                <h5 class="card-title bg-success text-white">@com.Name</h5>
+                <h6>Current Members (@com.Members.Count)</h6>
+                <ul>
+                @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.SortName))
+                {
+                    <li>@mem.Name @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} <i class="fa-solid fa-circle-info" onmouseover=""></i></li>                    
+                }
+                </ul>
+                <hr>
+                <h6>Interested</h6>
+                <ul>
+                    @foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
+                    {
+                        <li>@inter.Employee.Name Rank: @inter.PreferenceOrder</li>                        
+                    }
+                </ul>
+            </div>
+        </div><br>
+    }    
+</div>
+
+<script>
+    function getInfo(id)
+    {
+        
+    }
+</script>
