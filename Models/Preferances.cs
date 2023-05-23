@@ -17,8 +17,5 @@ namespace ServiceTracker.Models
 
         [ForeignKey("CommitteeId")]
         public Committees Committee { get; set; }
-
-        [ForeignKey("EmployeeId")]
-        public Employee Employee { get; set; }
     }
 }
