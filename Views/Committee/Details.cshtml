@@ -62,7 +62,7 @@
                         <span>@member.StartYear - @member.EndYear</span>
                     }
                 </td>
-                <td>TODO: Edit function</td>
+                <td><a asp-action="EditAppointment" asp-route-id="@member.Id"><i class="fa fa-pencil"></i></a></td>
             </tr>    
         }
         @if(!Model.committee.Members.Any())

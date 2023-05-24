@@ -104,6 +104,39 @@ namespace ServiceTracker.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> EditAppointment(int id)
+        {
+            var appointment = await _context.CommitteeMembers.Include(c => c.Employee).Include(c => c.Member).Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(appointment == null)
+            {
+                ErrorMessage = "Appointment not found!";
+                return RedirectToAction(nameof(Index));                
+            }
+            return View(appointment);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAppointment(int id, CommitteeMembers appointment)
+        {
+            var appointmentToUpdate = await _context.CommitteeMembers.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(appointmentToUpdate == null || appointmentToUpdate.Id != appointment.Id )
+            {
+                ErrorMessage = "Appointment not found!";
+                return RedirectToAction(nameof(Index));                
+            }
+            appointmentToUpdate.StartYear = appointment.StartYear;
+            appointmentToUpdate.EndYear = appointment.EndYear;
+            appointmentToUpdate.Chair = appointment.Chair;
+            appointmentToUpdate.ExOfficio = appointment.ExOfficio;
+            if(ModelState.IsValid)
+            {                
+                await _context.SaveChangesAsync();
+                Message = "Appointment updated";
+                return RedirectToAction(nameof(Details), new { id = appointmentToUpdate.CommitteeId }); 
+            }
+            return View(appointment);
+        }
+
         public async Task<IActionResult> GetMembers(string idType)
         {
             if(idType == "Faculty")
