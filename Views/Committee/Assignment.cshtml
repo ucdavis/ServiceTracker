@@ -59,16 +59,17 @@
     });
    
     function getInfo(ele,id)
-    {    
-        $(ele).attr('data-bs-original-title', "update at top of funciton");
-        $(ele)
-        $.ajax({
-                method: 'Get',
-                url: '/Committee/GetInfoEmployee',
-                    data: {
-                    id: id
-                }
-            })
+    {          
+        if($(ele).attr("data-bs-original-title") == "test")
+        {
+            //alert("run AJAX");
+            $.ajax({
+                    method: 'Get',
+                    url: '/Committee/GetInfoEmployee',
+                        data: {
+                        id: id
+                    }
+                })
             .done(function(data) {                
                 if(data != null)
                 {                    
@@ -115,12 +116,16 @@
                         results = results + "<hr>";
                     }       
                     $(ele).attr('data-bs-original-title', results);
+                    $(ele).addClass("bg-success");
                 }
             })
             .fail(function(xhr) {
                 alert("Could not get list of available members");
                 console.log('error', xhr);
+                $(ele).addClass("bg-danger");
+
             }); 
+        }
     }
 </script>
 }

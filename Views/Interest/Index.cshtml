@@ -1,6 +1,6 @@
 @model ServiceTracker.Models.InterestIndexViewModel
 
-<h1>Interests & Committement for @Model.InterestYear</h1>
+<h1>Interests for @Model.InterestYear Academic Year</h1>
 
 <hr>
 <div>
@@ -43,7 +43,24 @@
     </table>
     <a asp-action="New" class="btn btn-primary">Add Interest</a>
 </div>
-<hr>
+<div>
+    <hr>
+    <h2>Current Plant Sciences Committee(s)</h2>
+    @if(Model.currentAssignments.Count > 0)
+    {
+        <ul>
+             @foreach (var com in Model.currentAssignments)
+            {
+                <li>@com.Name</li> 
+            }
+        </ul>
+    } else
+    {
+        <span>No current assignments for next year.</span>
+    }
+    
+</div>
+@* <hr>
 <div>
     <h2>Current Appointment & Committements</h2>
     <table class="table">
@@ -98,6 +115,6 @@
             }
         </tbody>
     </table>
-</div>
+</div> *@
 
 
