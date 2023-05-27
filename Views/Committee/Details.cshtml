@@ -12,7 +12,7 @@
     <div class="form-group row">
         <label asp-for="committee.Description" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-9">
-            <input type="text" asp-for="committee.Description" readonly class="form-control-plaintext">
+            <textarea class="form-control-plaintext" readonly asp-for="committee.Description"></textarea>
         </div>
     </div>
     <div class="form-group row">
@@ -71,3 +71,11 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script type="text/Javascript">
+        $("textarea").each(function () {
+            this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+        });
+    </script>
+}
