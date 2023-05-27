@@ -15,18 +15,22 @@ namespace ServiceTracker.Models
         public List<Committees>  committees { get; set; }
         public List<CommitteePreference> interest { get; set; }               
         public int ViewYear { get; set; }
+        public List<Employee> slackers { get; set; }
 
        
         
                
         public static async Task<AssignmentViewModel> Create(ServiceTrackerContext _context)
         {
-            var year = YearFinder.Year + 1;                     
+            var year = YearFinder.Year + 1;    
+            var currentMembers = await _context.CommitteeMembers.Where(m => m.StartYear <= year && m.EndYear >= year).Select(m=> m.EmployeeId).ToListAsync();
+            var listExclusion = new List<int>(new int[] {11,12,13,14});
             var model = new AssignmentViewModel
             {
                 committees = await _context.Committees.Include(c => c.Members.Where(m => m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Employee).Include(c => c.Members.Where(m => m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Member).ToListAsync(),                
                 interest = await _context.CommitteePreferences.Include(p => p.Employee).Where(p => p.Year == year).ToListAsync(),
-                ViewYear = year,                              
+                ViewYear = year,                   
+                slackers = await _context.Employees.Where(e => e.VoteCategory != 0 && !currentMembers.Contains(e.Id) && !listExclusion.Contains(e.VoteCategory) && e.Current).OrderBy(e => e.LastName).ThenBy(e => e.LastName).ToListAsync(),          
             };           
             
             return model;

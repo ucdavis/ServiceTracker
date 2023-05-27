@@ -2,60 +2,56 @@
 
 
 <h1>Committee Assignments for @Model.ViewYear</h1>
-@* <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
-<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Tooltip on right">
-  Tooltip on right
-</button>
-<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltip on bottom">
-  Tooltip on bottom
-</button>
-<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tooltip on left">
-  Tooltip on left
-</button>
-<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
-  Tooltip with HTML
-</button> *@
 <div class="container row">
-    @foreach (var com in Model.committees)
+    <div class="col-sm-10">
+        <div class="container row">
+            @foreach (var com in Model.committees)
+            {
+                <div class="card col-sm-6">
+                    <div class="card-cody bg-success" style="--bs-bg-opacity: .25;">
+                        <h5 class="card-title bg-success text-white">@com.Name</h5>
+                        <h6>Current Members (@com.Members.Count)</h6>
+                        <ul>
+                        @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.ExOfficio).ThenBy(m => m.SortName))
+                        {
+                            if(mem.EndYear == Model.ViewYear)
+                            {
+                                <li><span class="text-danger">@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} </span>
+                                    <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
+                                    <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa-solid fa-pencil" style="color: black"></i></a>
+                                </li>
+                            } else
+                            {
+                                <li>@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} 
+                                    <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
+                                    <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa fa-pencil" style="color: black"></i></a>
+                                </li>
+                            }                                        
+                        }
+                        </ul>
+                        <hr>
+                        <h6>Interested</h6>
+                        <ul>
+                            @foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
+                            {
+                                <li>@inter.Employee.Name Rank: @inter.PreferenceOrder 
+                                    <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)" ></i></li>                        
+                            }
+                        </ul>
+                    </div>
+                </div><br>
+            }    
+        </div>
+ </div>
+ <div class="col-sm-2">The following faculty have no current appointments:<br>(Current faculty, excluding Ac. Admin/Coord, Proj Sci., Specialists, Lecturer)
+    <ul>
+    @foreach (var fact in Model.slackers)
     {
-        <div class="card col-sm-6">
-            <div class="card-cody bg-success" style="--bs-bg-opacity: .25;">
-                <h5 class="card-title bg-success text-white">@com.Name</h5>
-                <h6>Current Members (@com.Members.Count)</h6>
-                <ul>
-                @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.ExOfficio).ThenBy(m => m.SortName))
-                {
-                    if(mem.EndYear == Model.ViewYear)
-                    {
-                        <li><span class="text-danger">@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} </span>
-                            <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
-                            <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa-solid fa-pencil" style="color: black"></i></a>
-                        </li>
-                    } else
-                    {
-                        <li>@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} 
-                            <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
-                            <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa fa-pencil" style="color: black"></i></a>
-                        </li>
-                    }                                        
-                }
-                </ul>
-                <hr>
-                <h6>Interested</h6>
-                <ul>
-                    @foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
-                    {
-                        <li>@inter.Employee.Name Rank: @inter.PreferenceOrder 
-                            <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)" ></i></li>                        
-                    }
-                </ul>
-            </div>
-        </div><br>
-    }    
+        <li>@fact.Name</li>        
+    }
+    </ul>
+ </div>
 </div>
-
 @section Scripts {
 <script>
    $(function () {
