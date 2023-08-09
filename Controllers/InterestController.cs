@@ -84,7 +84,7 @@ namespace ServiceTracker.Controllers
 
         public async Task<IActionResult> New()
         {
-            var model = await _context.Committees.ToListAsync();
+            var model = await _context.Committees.Where(c => c.Active).ToListAsync();
             return View(model);
         }
 
