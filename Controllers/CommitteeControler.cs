@@ -54,6 +54,7 @@ namespace ServiceTracker.Controllers
             committeeToUpdate.Name = committee.Name;
             committeeToUpdate.Description = committee.Description;
             committeeToUpdate.Term = committee.Term;
+            committeeToUpdate.Active = committee.Active;
 
             if(ModelState.IsValid)
             {

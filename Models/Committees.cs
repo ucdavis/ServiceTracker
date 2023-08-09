@@ -11,6 +11,7 @@ namespace ServiceTracker.Models
         public string Description { get; set; }
         [Range(1,10)]
         public int Term { get; set; }
+        public bool Active { get; set; }
 
 
         [ForeignKey("CommitteeId")]
