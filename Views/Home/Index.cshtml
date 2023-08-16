@@ -7,9 +7,12 @@
     <ul>
         <li><a asp-controller="interest">Interests</a></li>
         <br><br>
-        <li><a asp-controller="committee">List of Committees</a> (Admin)</li>        
-        <li><a asp-controller="committee" asp-action="assignment">Annual Assignment</a> (Admin)</li>
-        
+        @if (User.IsInRole("Admin"))
+        {
+            <h2>Admin Functions:</h2>
+            <li><a asp-controller="committee">List of Committees</a></li>        
+            <li><a asp-controller="committee" asp-action="assignment">Annual Assignment</a></li>
+        }
         @* <li><a asp-action="claims">No role Claims</a></li>
         <li><a asp-action="adminclaims">Auth Claims</a></li>
         <li><a asp-action="version">MVC Version</a></li> *@
