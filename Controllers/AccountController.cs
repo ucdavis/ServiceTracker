@@ -27,6 +27,12 @@ namespace ServiceTracker.Controllers
             await HttpContext.ChallengeAsync(CasDefaults.AuthenticationType, props);
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Index", "Home");
+        }
+
 
 
     }
