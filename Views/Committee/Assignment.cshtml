@@ -3,129 +3,161 @@
 
 <h1>Committee Assignments for @Model.ViewYear</h1>
 <div class="container row">
-    <div class="col-sm-10">
-        <div class="container row">
-            @foreach (var com in Model.committees)
-            {
-                <div class="card col-sm-6">
-                    <div class="card-cody bg-success" style="--bs-bg-opacity: .25;">
-                        <h5 class="card-title bg-success text-white">@com.Name</h5>
-                        <h6>Current Members (@com.Members.Count)</h6>
-                        <ul>
-                        @foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.ExOfficio).ThenBy(m => m.SortName))
-                        {
-                            if(mem.EndYear == Model.ViewYear)
-                            {
-                                <li><span class="text-danger">@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} </span>
-                                    <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
-                                    <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa-solid fa-pencil" style="color: black"></i></a>
-                                </li>
-                            } else
-                            {
-                                <li>@mem.ListName @mem.StartYear - @mem.EndYear @if(mem.Chair){<b>Chair</b>} @if(mem.ExOfficio){<span>Ex-Of.</span>} 
-                                    <i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)" ></i>
-                                    <a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa fa-pencil" style="color: black"></i></a>
-                                </li>
-                            }                                        
-                        }
-                        </ul>
-                        <hr>
-                        <h6>Interested</h6>
-                        <ul>
-                            @foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
-                            {
-                                <li>@inter.Employee.Name Rank: @inter.PreferenceOrder 
-                                    <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)" ></i></li>                        
-                            }
-                        </ul>
-                    </div>
-                </div><br>
-            }    
-        </div>
- </div>
- <div class="col-sm-2">The following faculty have no current appointments:<br>(Current faculty, excluding Ac. Admin/Coord, Proj Sci., Specialists, Lecturer)
-    <ul>
-    @foreach (var fact in Model.slackers)
-    {
-        <li>@fact.Name</li>        
-    }
-    </ul>
- </div>
+	<div class="col-sm-10">
+		<div class="container row">
+			@foreach (var com in Model.committees)
+			{
+				<div class="card col-sm-6">
+					<div class="card-cody bg-success" style="--bs-bg-opacity: .25;">
+						<h5 class="card-title bg-success text-white">@com.Name</h5>
+						<h6>Current Members (@com.Members.Count)</h6>
+						<ul>
+							@foreach (var mem in com.Members.OrderByDescending(m => m.Chair).ThenBy(m => m.ExOfficio).ThenBy(m => m.SortName))
+							{
+								if (mem.EndYear == Model.ViewYear)
+								{
+									<li>
+										<span class="text-danger">
+											@mem.ListName @mem.StartYear - @mem.EndYear @if (mem.Chair)
+											{
+												<b>Chair</b>
+											} @if (mem.ExOfficio)
+											{
+												<span>Ex-Of.</span>
+											}
+										</span>
+										<i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)"></i>
+										<a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa-solid fa-pencil" style="color: black"></i></a>
+									</li>
+								}
+								else
+								{
+									<li>
+										@mem.ListName @mem.StartYear - @mem.EndYear @if (mem.Chair)
+										{
+											<b>Chair</b>
+										} @if (mem.ExOfficio)
+										{
+											<span>Ex-Of.</span>
+										}
+										<i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)"></i>
+										<a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa fa-pencil" style="color: black"></i></a>
+									</li>
+								}
+							}
+						</ul>
+						<hr>
+						<h6>Interested</h6>
+						<ul>
+							@foreach (var inter in Model.interest.Where(i => i.CommitteeId == @com.Id).OrderBy(i => i.PreferenceOrder))
+							{
+								<li>
+									@inter.Employee.Name Rank: @inter.PreferenceOrder
+									<i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)"></i>
+								</li>
+							}
+						</ul>
+					</div>
+				</div>
+
+				<br>
+			}
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<div>
+			The following faculty have no current appointments:<br>(Current faculty, excluding Ac. Admin/Coord, Proj Sci., Specialists, Lecturer)
+			<ul>
+				@foreach (var fact in Model.slackers)
+				{
+					<li>@fact.Name</li>
+				}
+			</ul>
+		</div>
+		<div>
+			<hr />
+			The following faculty have not provided interests for the current year:<br>(same exclusions as above)
+			<ul>
+				@foreach (var fact in Model.noResponders)
+				{
+					<li>@fact.Name</li>
+				}
+			</ul>
+		</div>
+		<div>
+			<hr />
+			The following faculty have not provided interests for the current year:<br>(just email)
+			<dl>
+				@foreach (var fact in Model.noResponders)
+				{
+					<dt>@fact.Email</dt>
+				}
+			</dl>
+		</div>
+	</div>
 </div>
 @section Scripts {
-<script>
-   $(function () {
-        $("[data-bs-toggle='tooltip']").tooltip();
-    });
-   
-    function getInfo(ele,id)
-    {          
-        if($(ele).attr("data-bs-original-title") == "test")
-        {
-            //alert("run AJAX");
-            $.ajax({
-                    method: 'Get',
-                    url: '/Committee/GetInfoEmployee',
-                        data: {
-                        id: id
-                    }
-                })
-            .done(function(data) {                
-                if(data != null)
-                {                    
-                    if(data.assignments != null)
-                    {
-                        var assignments = data.assignments;
-                    }
-                    if(data.interest != null)
-                    {
-                        var interests = data.interest;
-                    }
-                    if(data.commitments != null)
-                    {
-                        var committments = data.commitments;
-                    }
-                
-                    var results = "";                    
+	<script>
+		$(function () {
+			$("[data-bs-toggle='tooltip']").tooltip();
+		});
 
-                    if(assignments.length > 0)
-                    {
-                        results = results + "<b>Assignments:</b><hr>";
-                        $.each(assignments,function(i,assignment)
-                        {  
-                            results = results +  assignment.name + "<br>";
-                        });
-                        results = results + "<hr>";
-                    }  
-                    if(interests.length > 0)
-                    {
-                        results = results + "<b>Interests:</b><hr>";
-                        $.each(interests,function(i,interest)
-                        {  
-                            results = results +  interest.committee.name + "<br>";
-                        });
-                        results = results + "<hr>";
-                    }  
-                    if(committments.length > 0)
-                    {
-                        results = results + "<b>Committments:</b><hr>";
-                        $.each(committments,function(i,committment)
-                        {  
-                            results = results +  committment.title + ", " + committment.location + ", " + committment.description + "<br>";
-                        });
-                        results = results + "<hr>";
-                    }       
-                    $(ele).attr('data-bs-original-title', results);
-                    $(ele).addClass("bg-success");
-                }
-            })
-            .fail(function(xhr) {
-                alert("Could not get list of available members");
-                console.log('error', xhr);
-                $(ele).addClass("bg-danger");
+		function getInfo(ele, id) {
+			if ($(ele).attr("data-bs-original-title") == "test") {
+				//alert("run AJAX");
+				$.ajax({
+					method: 'Get',
+					url: '/Committee/GetInfoEmployee',
+					data: {
+						id: id
+					}
+				})
+					.done(function (data) {
+						if (data != null) {
+							if (data.assignments != null) {
+								var assignments = data.assignments;
+							}
+							if (data.interest != null) {
+								var interests = data.interest;
+							}
+							if (data.commitments != null) {
+								var committments = data.commitments;
+							}
 
-            }); 
-        }
-    }
-</script>
+							var results = "";
+
+							if (assignments.length > 0) {
+								results = results + "<b>Assignments:</b><hr>";
+								$.each(assignments, function (i, assignment) {
+									results = results + assignment.name + "<br>";
+								});
+								results = results + "<hr>";
+							}
+							if (interests.length > 0) {
+								results = results + "<b>Interests:</b><hr>";
+								$.each(interests, function (i, interest) {
+									results = results + interest.committee.name + "<br>";
+								});
+								results = results + "<hr>";
+							}
+							if (committments.length > 0) {
+								results = results + "<b>Committments:</b><hr>";
+								$.each(committments, function (i, committment) {
+									results = results + committment.title + ", " + committment.location + ", " + committment.description + "<br>";
+								});
+								results = results + "<hr>";
+							}
+							$(ele).attr('data-bs-original-title', results);
+							$(ele).addClass("bg-success");
+						}
+					})
+					.fail(function (xhr) {
+						alert("Could not get list of available members");
+						console.log('error', xhr);
+						$(ele).addClass("bg-danger");
+
+					});
+			}
+		}
+	</script>
 }

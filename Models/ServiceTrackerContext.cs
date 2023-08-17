@@ -16,7 +16,7 @@ namespace ServiceTracker.Models
         {
         }
 
-        public virtual DbSet<ServiceTracker.Models.Employee> Employees { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Committees> Committees { get; set; }
         public virtual DbSet<CommitteeMembers> CommitteeMembers { get; set; }
         public virtual DbSet<Members> Members { get; set; }
@@ -54,6 +54,7 @@ namespace ServiceTracker.Models
                 entity.Property(e => e.AdminStaff).HasColumnName("admin_staff");
                 entity.Property(e => e.KerberosId).HasColumnName("kerberos_id");
                 entity.Property(e => e.Chair).HasColumnName("dept_chair");
+                entity.Property(e => e.Email).HasColumnName("full_email");
 
             });
 

@@ -12,6 +12,7 @@ namespace ServiceTracker.Models
         public bool Current { get; set; }
         public string KerberosId { get; set; }
         public bool Chair { get; set; }
+        public  string Email { get; set; }
 
         public string Name { 
             get {
