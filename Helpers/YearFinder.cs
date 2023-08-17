@@ -14,7 +14,7 @@ namespace ServiceTracker.Helpers
             {
                 if (_Year== 0)
                 {
-                    if (DateTime.Now.Month >= 7 && DateTime.Now.Month <= 12)
+                    if (DateTime.Now.Month >= 9 && DateTime.Now.Month <= 12)
                     {
                         _Year = DateTime.Now.Year;
                     }
