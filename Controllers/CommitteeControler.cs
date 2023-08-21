@@ -76,7 +76,19 @@ namespace ServiceTracker.Controllers
             return View(model);
         }
 
-        [HttpPost]
+		public async Task<IActionResult> AddToCommittee(int committeeId, string employeeId)
+		{
+			var model = await CommitteeMemberAddViewModel.Create(_context, committeeId, YearFinder.Year + 1);
+			if (model.committee == null)
+			{
+				ErrorMessage = "Committee not found!";
+				return RedirectToAction(nameof(Index));
+			}
+            model.member.EmployeeId = employeeId;
+			return View("AddMember",model);
+		}
+
+		[HttpPost]
         public async Task<IActionResult> AddMember(CommitteeMemberAddViewModel vm)
         {
             var newMember = new CommitteeMembers();
