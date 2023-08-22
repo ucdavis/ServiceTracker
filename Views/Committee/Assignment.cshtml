@@ -27,7 +27,7 @@
 											}
 										</span>
 										<i class="fa fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@mem.PersonId)"></i>
-										<a asp-action="EditAppointment" asp-route-id="@mem.Id"><i class="fa-solid fa-pencil" style="color: black"></i></a>
+										<a asp-action="EditAppointment" asp-route-id="@mem.Id" asp-route-FromAssignment="true"><i class="fa-solid fa-pencil" style="color: black"></i></a>
 									</li>
 								}
 								else
@@ -54,6 +54,7 @@
 								<li>
 									@inter.Employee.Name Rank: @inter.PreferenceOrder
 									<i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-trigger="click" data-bs-html="true" title="test" onmouseover="getInfo(this,@inter.EmployeeId)"></i>
+									<a asp-action="AddToCommittee" asp-route-employeeId="@inter.Employee.Id" asp-route-committeeId="@com.Id"><i class="fa-solid fa-plus"></i></a>
 								</li>
 							}
 						</ul>

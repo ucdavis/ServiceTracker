@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+
 namespace ServiceTracker.Models
 {
     public class Employee

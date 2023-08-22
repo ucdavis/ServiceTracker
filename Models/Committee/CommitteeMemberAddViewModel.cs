@@ -21,10 +21,11 @@ namespace ServiceTracker.Models
        
 
         public int AppointmentLength { get; set; }
+        public bool FromAssignment{ get; set; }
 
-       
-        
-               
+
+
+
         public static async Task<CommitteeMemberAddViewModel> Create(ServiceTrackerContext _context, int id, int year)
         {
             if(year == 0)
@@ -34,6 +35,7 @@ namespace ServiceTracker.Models
             var model = new CommitteeMemberAddViewModel
             {
                 committee = await _context.Committees.Where(c => c.Id == id).FirstOrDefaultAsync(),
+                FromAssignment = false,
                 faculty = await _context.Employees.Where(e => e.VoteCategory != 0).OrderBy(e => e.LastName).ThenBy(e => e.LastName).ToListAsync(),
                  
                 member = new CommitteeMembers{CommitteeId = id, StartYear = year},             
@@ -53,6 +55,7 @@ namespace ServiceTracker.Models
         public static async Task<CommitteeMemberAddViewModel> Retry(ServiceTrackerContext _context, CommitteeMemberAddViewModel vm)
         {              
             vm.committee =   await _context.Committees.Where(c => c.Id == vm.member.CommitteeId).FirstOrDefaultAsync();
+            vm.FromAssignment = vm.FromAssignment;
             vm.faculty = await _context.Employees.Where(e => e.VoteCategory != 0).OrderBy(e => e.LastName).ThenBy(e => e.LastName).ToListAsync();
             vm.years = YearFinder.YearList.ConvertAll(a =>
                     {

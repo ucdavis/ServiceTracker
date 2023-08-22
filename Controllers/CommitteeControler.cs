@@ -76,7 +76,20 @@ namespace ServiceTracker.Controllers
             return View(model);
         }
 
-        [HttpPost]
+		public async Task<IActionResult> AddToCommittee(int committeeId, string employeeId)
+		{
+			var model = await CommitteeMemberAddViewModel.Create(_context, committeeId, YearFinder.Year + 1);
+			if (model.committee == null)
+			{
+				ErrorMessage = "Committee not found!";
+				return RedirectToAction(nameof(Index));
+			}
+            model.member.EmployeeId = employeeId;
+            model.FromAssignment = true;
+			return View("AddMember",model);
+		}
+
+		[HttpPost]
         public async Task<IActionResult> AddMember(CommitteeMemberAddViewModel vm)
         {
             var newMember = new CommitteeMembers();
@@ -99,13 +112,17 @@ namespace ServiceTracker.Controllers
                 _context.Add(newMember);
                 await _context.SaveChangesAsync();
                 Message = "Member Added";
+                if(vm.FromAssignment)
+                {
+                    return RedirectToAction(nameof(Assignment));
+                }
                 return RedirectToAction(nameof(Details), new { id = submittedMember.CommitteeId }); 
             }
             var model = await CommitteeMemberAddViewModel.Retry(_context, vm);
             return View(model);
         }
 
-        public async Task<IActionResult> EditAppointment(int id)
+        public async Task<IActionResult> EditAppointment(int id, bool FromAssignment = false)
         {
             var appointment = await _context.CommitteeMembers.Include(c => c.Employee).Include(c => c.Member).Where(c => c.Id == id).FirstOrDefaultAsync();
             if(appointment == null)
@@ -113,11 +130,12 @@ namespace ServiceTracker.Controllers
                 ErrorMessage = "Appointment not found!";
                 return RedirectToAction(nameof(Index));                
             }
+            ViewBag.FromAssignment = FromAssignment;
             return View(appointment);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAppointment(int id, CommitteeMembers appointment)
+        public async Task<IActionResult> EditAppointment(int id, CommitteeMembers appointment, bool FromAssignment = false)
         {
             var appointmentToUpdate = await _context.CommitteeMembers.Where(c => c.Id == id).FirstOrDefaultAsync();
             if(appointmentToUpdate == null || appointmentToUpdate.Id != appointment.Id )
@@ -133,6 +151,10 @@ namespace ServiceTracker.Controllers
             {                
                 await _context.SaveChangesAsync();
                 Message = "Appointment updated";
+                if(FromAssignment)
+                {
+                    return RedirectToAction(nameof(Assignment));
+                }
                 return RedirectToAction(nameof(Details), new { id = appointmentToUpdate.CommitteeId }); 
             }
             return View(appointment);
