@@ -4,6 +4,10 @@
 
 <form asp-action="EditAppointment">
     <input type="hidden" asp-for="Id">
+    @if (ViewBag.FromAssignment != null && ViewBag.FromAssignment)
+    {
+        <input type="hidden" id="FromAssignment" name="FromAssignment" value="true" />
+    }   
     <div class="container">         
         <div class="form-group row">
             <label asp-for="Employee.Id" class="col-sm-3 col-form-label">Member:</label>    
@@ -37,7 +41,14 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-12">
-                <input type="submit" value="Update Appointment" class="btn btn-primary"> | <a class="btn btn-dark" asp-action="Details" asp-route-id="@Model.CommitteeId">Cancel</a>
+                <input type="submit" value="Update Appointment" class="btn btn-primary"> |
+                @if (ViewBag.FromAssignment != null && ViewBag.FromAssignment)
+                {
+                    <a class="btn btn-dark" asp-action="Assignment" asp-route-id="@Model.CommitteeId">Cancel</a>
+                } else
+                {
+                    <a class="btn btn-dark" asp-action="Details" asp-route-id="@Model.CommitteeId">Cancel</a>
+                }                
             </div>            
         </div>
     </div>
