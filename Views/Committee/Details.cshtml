@@ -1,5 +1,7 @@
 @model ServiceTracker.Models.CommitteeDetailsViewModel
-
+@{
+    var count = 0;
+}
 <h2>@Model.committee.Name</h2>
 
 <div>    
@@ -69,13 +71,17 @@
                     }
                 </td>
                 <td><a asp-action="EditAppointment" asp-route-id="@member.Id"><i class="fa fa-pencil"></i></a></td>
-            </tr>    
+            </tr>  
+            count += 1;
         }
         @if(!Model.committee.Members.Any())
         {
             <tr><td colspan="3">No members for selected year.</td></tr>
-        }
+        } 
     </tbody>
+    <tfoot>
+        <tr><td colspan="3">Total : @count</td></tr>
+    </tfoot>
 </table>
 
 @section Scripts {
