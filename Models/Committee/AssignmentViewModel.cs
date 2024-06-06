@@ -38,6 +38,23 @@ namespace ServiceTracker.Models
             };           
             
             return model;
+        } 
+
+        public static async Task<AssignmentViewModel> CreateReport(ServiceTrackerContext _context)
+        {
+            var year = YearFinder.Year + 1;
+            var currentMembers = await _context.CommitteeMembers.Where(m => m.StartYear <= year && m.EndYear >= year).Select(m => m.EmployeeId).ToListAsync();
+            var listExclusion = new List<int>(new int[] { 11, 12, 13, 14, 21 });
+            var currentResponders = await _context.CommitteePreferences.Where(p => p.Year == year).Select(m => m.EmployeeId).ToListAsync();
+            var model = new AssignmentViewModel
+            {
+                committees = await _context.Committees.Include(c => c.Members.Where(m => m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Employee).Include(c => c.Members.Where(m => m.StartYear <= year && m.EndYear >= year)).ThenInclude(m => m.Member).ToListAsync(),                
+                ViewYear = year,
+                slackers = await _context.Employees.Where(e => e.VoteCategory != 0 && !listExclusion.Contains(e.VoteCategory) && e.Current).OrderBy(e => e.LastName).ThenBy(e => e.FirstName).ToListAsync(),
+                
+            };
+
+            return model;
         }
 
        
