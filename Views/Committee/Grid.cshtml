@@ -1,0 +1,114 @@
+@model ServiceTracker.Models.AssignmentViewModel
+
+@{
+	Layout = null;
+}
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>PSServiceTracker</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/ServiceTracker.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PS Service Tracker</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-controller="interest" asp-action="Index">Interests</a>
+						</li>
+						@if (User.IsInRole("Admin"))
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-controller="Committee" asp-action="Index">Committees</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-controller="Committee" asp-action="Assignment">Assignment</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-controller="Committee" asp-action="Grid">Grid</a>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+<h1>Committee Assignments for @Model.ViewYear</h1>
+
+
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<td></td>
+			@foreach(var com in Model.committees)
+			{
+				<th>@com.Name</th>
+			}				
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var faculty in Model.slackers)
+		{
+			<tr>
+				<td>@faculty.LastFirstName</td>
+				@foreach (var currentCom in Model.committees)
+				{
+					@if (Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m => m.EmployeeId == faculty.Id && m.Chair)))
+					{
+						@if(Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m=> m.EmployeeId == faculty.Id && m.EndYear == Model.ViewYear)))
+						{
+							<td class="text-danger"><b>C</b></td>
+						} else
+						{
+							<td>C</td>
+						}
+					}
+					else if (Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m => m.EmployeeId == faculty.Id && m.ExOfficio)))
+					{
+						@if (Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m => m.EmployeeId == faculty.Id && m.EndYear == Model.ViewYear)))
+						{
+							<td class="text-danger"><b>ExOf</b></td>
+						}
+						else
+						{
+							<td>ExOf</td>
+						}
+					}
+					else if (Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m => m.EmployeeId == faculty.Id)))
+					{
+						@if (Model.committees.Any(c => c.Id == currentCom.Id && c.Members.Any(m => m.EmployeeId == faculty.Id && m.EndYear == Model.ViewYear)))
+						{
+							<td class="text-danger"><b>M</b></td>
+						}
+						else
+						{
+							<td>M</td>
+						}
+					}
+					else
+					{
+						<td></td>
+					}
+				}
+			</tr>
+		}
+	</tbody>
+</table>	
+</body>
+
+
+

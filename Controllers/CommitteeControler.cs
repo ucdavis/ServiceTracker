@@ -191,6 +191,14 @@ namespace ServiceTracker.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Grid()
+        {
+            var model = await AssignmentViewModel.CreateReport(_context);
+            return View(model);
+        }
+
+
+
         public async Task<IActionResult> GetInfoEmployee(string id)
         {
             var model = await MemberInfoViewModel.Create(_context, id);
